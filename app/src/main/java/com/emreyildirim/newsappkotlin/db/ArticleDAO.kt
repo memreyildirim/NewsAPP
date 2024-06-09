@@ -10,6 +10,13 @@ import com.emreyildirim.newsappkotlin.models.Article
 
 @Dao
 interface ArticleDAO {
+
+    @Query("SELECT MAX(id) FROM articles")
+    suspend fun getMaxArticleId():Int?
+
+    @Query("SELECT * FROM articles WHERE url= :url LIMIT 1")
+    suspend fun getArticleByUrl(url: String):Article?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(article: Article):Long
 
